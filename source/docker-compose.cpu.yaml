@@ -1,0 +1,23 @@
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_CPU_ONLY=1
+    volumes:
+      - ollama_data:/root/.ollama
+
+  docx2md:
+    build: .
+    container_name: docx2md
+    working_dir: /workspace/scripts
+    volumes:
+      - ./scripts:/workspace/scripts
+      - ./input:/workspace/input
+      - ./output:/workspace/output
+    command: ["tail", "-f", "/dev/null"]
+volumes:
+  ollama_data:
